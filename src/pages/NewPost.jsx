@@ -147,7 +147,7 @@ function NewPost() {
             className="w-full py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
             type="submit"
           >
-            Create Event
+            Create Post
           </button>
         </form>
       </div>
