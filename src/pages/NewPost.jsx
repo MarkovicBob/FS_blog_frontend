@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
+import { Toaster, toast } from "react-hot-toast"; // Import react-hot-toast
 
 function NewPost() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     date: "",
@@ -37,7 +39,7 @@ function NewPost() {
 
       console.log("Post successfully created:", response.data);
       // You can show a success message to the user
-
+      toast.success("Post successfully created:");
       // Clear the form and redirect the user
       setFormData({
         title: "",
@@ -46,7 +48,9 @@ function NewPost() {
         cover: "",
       });
 
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (error) {
       if (error.response) {
         // Handle server errors
@@ -71,6 +75,7 @@ function NewPost() {
       <h1 className="text-2xl font-semibold mb-4 text-center">
         Create New Post
       </h1>
+      <Toaster position="top-center" reverseOrder={false} />
       <div>
         <div className="flex flex-col items-center justify-center space-x-4 text-center gap-4">
           {/* {imageUrl && (
