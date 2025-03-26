@@ -35,7 +35,7 @@ function NewPost() {
         }
       );
 
-      console.log("Post successfully created:", response);
+      console.log("Post successfully created:", response.data);
       // You can show a success message to the user
 
       // Clear the form and redirect the user
