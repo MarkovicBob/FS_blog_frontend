@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import MainLayout from "./layout/MainLayout";
 import NotFound from "./pages/NotFound";
 import { Route, Routes } from "react-router-dom";
+import NewPost from "./pages/NewPost";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           {/* DYNAMIC ROUTES */}
           <Route path="blogposts" element={<BlogPosts />} />
           <Route path="products/:productId" element={<BlogPost />} />
+          <Route path="new" element={<NewPost />} />
 
           {/* NOT FOUND */}
           <Route path="*" element={<NotFound />} />
