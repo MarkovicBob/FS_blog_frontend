@@ -15,7 +15,7 @@ function App() {
 
           {/* DYNAMIC ROUTES */}
           <Route path="blogposts" element={<BlogPosts />} />
-          <Route path="products/:productId" element={<BlogPost />} />
+          <Route path="blogposts/:id" element={<BlogPost />} />
           <Route path="new" element={<NewPost />} />
 
           {/* NOT FOUND */}
