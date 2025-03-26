@@ -1,157 +1,70 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [posts, setPosts] = useState([]);
-
-  const [editFormData, setEditFormData] = useState({
-    title: "",
-    content: "",
-    cover: "",
-    date: "",
-    author: "",
-  });
-
-  const [editingPost, setEditingPost] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("http://localhost:5173/blogposts");
-        const data = await res.json();
-        setPosts(data.results || []);
+        const res = await axios.get("http://localhost:3000/blogposts");
+        setPosts(res.data);
+        // console.log(res);
       } catch (error) {
-        console.error("Error fetching posts:", error);
-        setPosts([]);
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchPosts();
   }, []);
 
-  const handleEdit = (post) => {
-    setEditingPost(post.id);
-    setEditFormData({
-      title: post.title,
-      content: post.content,
-      cover: post.cover,
-      data: post.data,
-      description: post.description,
-      author: post.author,
-    });
-  };
-
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(
-        `http://localhost:3000/blogposts/${editingPost}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(editFormData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (res.ok) {
-        const updatedPost = await res.json();
-        setPosts(
-          posts.map((post) => (post.id === editingPost ? updatedPost : post))
-        );
-        setEditingPost(null);
-      }
-    } catch (error) {
-      console.error("Error updating ep:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const res = await fetch(`http://localhost:5173/blogposts/${id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        setPosts(posts.filter((post) => post.id !== id));
-      }
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
-  };
+  // console.log(posts);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4 text-center">Events</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {posts.map((event, index) => (
-          <div key={index} className="card bg-base-100 shadow-xl p-4">
-            {editingPost === event.id ? (
-              <form onSubmit={handleEditSubmit}>
-                <input
-                  type="text"
-                  name="title"
-                  value={editFormData.title}
-                  onChange={handleEditChange}
-                />
-                <input
-                  type="text"
-                  name="content"
-                  value={editFormData.content}
-                  onChange={handleEditChange}
-                />
-                <input
-                  type="url"
-                  name="cover"
-                  value={editFormData.cover}
-                  onChange={handleEditChange}
-                />
-                <input
-                  type="date"
-                  name="date"
-                  value={editFormData.date}
-                  onChange={handleEditChange}
-                />
-
-                <input
-                  type="text"
-                  name="author"
-                  value={editFormData.author}
-                  onChange={handleEditChange}
-                />
-                <button type="submit">Save</button>
-              </form>
-            ) : (
-              <>
-                <h2 className="text-xl font-bold">{event.title}</h2>
-                <p>{event.date}</p>
-                <p>{event.location}</p>
-
-                <div className="flex justify-between mt-4">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => handleEdit(event)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(event.id)}
-                  >
-                    Delete
-                  </button>
+    <>
+      <h1 className="text-center text-4xl font-bold text-gray-800 dark:text-white underline decoration-white-500 decoration-4 tracking-wide">
+        Blog Posts
+      </h1>{" "}
+      <div className="p-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+        {loading ? (
+          <p>Loading</p>
+        ) : (
+          posts.map((post, index) => {
+            const postId = index + 1;
+            return (
+              <Link key={postId} to={`/blogposts/${postId}`}>
+                <div
+                  key={post.id}
+                  className="border p-4 shadow-lg rounded-lg flex flex-col items-center justify-between hover:scale-105 transition-transform duration-100 min-h-[300px]"
+                >
+                  <h2 className="text-xl font-bold uppercase text-center">
+                    {post.title}
+                  </h2>
+                  <img
+                    src={post.cover}
+                    alt="post_image"
+                    className="w-full h-40 object-cover rounded-md"
+                  />
+                  <p className="text-gray-500">{post.date.slice(0, 10)}</p>
+                  <p className="line-clamp-3 text-center px-2">
+                    {post.content.length > 50
+                      ? `${post.content.substring(0, 50)}... read more`
+                      : post.content}
+                  </p>
+                  <p className="text-sm text-gray-600 font-semibold">
+                    {post.author}
+                  </p>
                 </div>
-              </>
-            )}
-          </div>
-        ))}
+              </Link>
+            );
+          })
+        )}
       </div>
-    </div>
+    </>
   );
 }
 
