@@ -33,10 +33,9 @@ function Home() {
         {loading ? (
           <p>Loading</p>
         ) : (
-          posts.map((post, index) => {
-            const postId = index + 1;
+          posts.map((post) => {
             return (
-              <Link key={postId} to={`/blogposts/${postId}`}>
+              <Link key={post.id} to={`/blogposts/${post.id}`}>
                 <div
                   key={post.id}
                   className="border p-4 shadow-lg rounded-lg flex flex-col items-center justify-between hover:scale-105 transition-transform duration-100 min-h-[300px]"
@@ -52,7 +51,10 @@ function Home() {
                   <p className="text-gray-500">{post.date.slice(0, 10)}</p>
                   <p className="line-clamp-3 text-center px-2">
                     {post.content.length > 50
-                      ? `${post.content.substring(0, 50)}... read more`
+                      ? `${post.content.substring(
+                          0,
+                          50
+                        )}... click for more details`
                       : post.content}
                   </p>
                   <p className="text-sm text-gray-600 font-semibold">
