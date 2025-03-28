@@ -1,12 +1,12 @@
+import NotFound from "../pages/NotFound";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast, Toaster } from "react-hot-toast";
-import { useParams } from "react-router-dom";
-import NotFound from "../pages/NotFound";
-import { FaRegEdit } from "react-icons/fa";
+import { Toaster, toast } from "react-hot-toast";
 import { CiImageOff } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 import { GoUpload } from "react-icons/go";
+import { MdDelete } from "react-icons/md";
+import { useParams } from "react-router-dom";
 
 function BlogPost() {
   const { id } = useParams();
@@ -96,7 +96,7 @@ function BlogPost() {
       {post === null ? (
         <NotFound />
       ) : (
-        <div className=" m-8">
+        <div className="container mx-auto p-6">
           <div className="flex items-center gap-8 justify-between">
             {isEditing ? (
               <input

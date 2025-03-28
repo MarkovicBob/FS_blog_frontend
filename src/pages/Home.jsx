@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { FadeLoader } from "react-spinners";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -29,9 +30,9 @@ function Home() {
       <h1 className="text-center text-4xl font-bold text-gray-800 dark:text-white underline decoration-white-500 decoration-4 tracking-wide">
         Blog Posts
       </h1>{" "}
-      <div className="p-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {loading ? (
-          <p>Loading</p>
+          <FadeLoader />
         ) : (
           posts.map((post) => {
             return (
