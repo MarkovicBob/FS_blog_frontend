@@ -4,6 +4,9 @@ import { toast, Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import { FaRegEdit } from "react-icons/fa";
+import { CiImageOff } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
+import { GoUpload } from "react-icons/go";
 
 function BlogPost() {
   const { id } = useParams();
@@ -14,6 +17,8 @@ function BlogPost() {
     date: "",
     title: "",
     content: "",
+    cover: "",
+    author: "",
   });
 
   useEffect(() => {
@@ -95,47 +100,83 @@ function BlogPost() {
           <div className="flex items-center gap-8 justify-between">
             {isEditing ? (
               <input
-                type="date"
-                name="date"
-                value={editedPost.date.slice(0, 10)}
+                className="text-3xl font-black w-full"
+                type="text"
+                name="title"
+                value={editedPost.title}
                 onChange={handleChange}
               />
             ) : (
-              <p>{post.date.slice(0, 10)}</p>
+              <h2 className="text-3xl font-black w-full">{post.title}</h2>
             )}
             <FaRegEdit onClick={handleEdit} className="cursor-pointer" />
           </div>
           <form onSubmit={handleSave}>
-            <div className=" pt-2">
+            <div className=" pt-1">
               {isEditing ? (
                 <input
-                  className="text-2xl font-black w-full"
-                  type="text"
-                  name="title"
-                  value={editedPost.title}
+                  type="date"
+                  name="date"
+                  value={editedPost.date.slice(0, 10)}
                   onChange={handleChange}
                 />
               ) : (
-                <h2 className="text-2xl font-black w-full">{post.title}</h2>
+                <p>{post.date.slice(0, 10)}</p>
               )}
             </div>
+
+            {isEditing ? (
+              <input
+                className="text-sm font-light w-full text-stone-400 pt-2"
+                type="text"
+                name="author"
+                value={editedPost.author}
+                onChange={handleChange}
+              />
+            ) : (
+              <h2 className="text-sm font-light w-full text-stone-400 pt-2">
+                {post.author ? post.author : "Unknown Author"}
+              </h2>
+            )}
+
+            <div className="mt-6">
+              {isEditing ? (
+                <input
+                  className="w-full max-h-[350px] object-cover"
+                  name="cover"
+                  src={editedPost.cover}
+                  value={editedPost.cover}
+                  onChange={handleChange}
+                ></input>
+              ) : (
+                <img
+                  className="w-full max-h-[350px] object-cover"
+                  src={post.cover ? post.cover : <CiImageOff />}
+
+                  //{post.author ? post.author : "Unknown Author"}
+                ></img>
+              )}
+            </div>
+
             <div className="mt-6">
               {isEditing ? (
                 <textarea
-                  className="w-full h-auto"
+                  className="w-full h-[300px] text-lg font-sans"
                   name="content"
                   value={editedPost.content}
                   onChange={handleChange}
                 ></textarea>
               ) : (
-                <p className="w-full h-auto">{post.content}</p>
+                <p className="w-full h-auto text-lg font-sans">
+                  {post.content}
+                </p>
               )}
             </div>
 
             {isEditing && (
               <button
                 type="submit"
-                className="rounded-lg px-6 bg-stone-950 text-white mt-8 p-2"
+                className="rounded-lg px-6 bg-stone-950 text-white mt-8 p-2 cursor-pointer"
               >
                 Save Change
               </button>
@@ -144,7 +185,7 @@ function BlogPost() {
           <div className="flex justify-end gap-6">
             <button
               onClick={handleDelete}
-              className="rounded-lg px-6 bg-stone-950 text-white mt-8 p-2"
+              className="rounded-lg px-6 bg-stone-950 text-white mt-8 p-2 cursor-pointer"
             >
               Delete
             </button>
