@@ -8,12 +8,11 @@ function NewPost() {
 
   const [formData, setFormData] = useState({
     title: "",
+    author: "",
     date: "",
     content: "",
     cover: "",
   });
-
-  const [imageUrl, setImageUrl] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,6 +25,17 @@ function NewPost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const { title, author, date, content, cover } = formData;
+    if (!title || !author || !date || !content || !cover) {
+      return toast.error("Please fill in all fields");
+    }
+
+    const imageUrlRegex =
+      /^(https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg)(\?.*)?)$/i;
+    if (!imageUrlRegex.test(cover)) {
+      return toast.error("Please enter a valid image URL");
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:3000/blogposts",
@@ -37,12 +47,12 @@ function NewPost() {
         }
       );
 
-      console.log("Post successfully created:", response.data);
       // You can show a success message to the user
       toast.success("Post successfully created:");
       // Clear the form and redirect the user
       setFormData({
         title: "",
+        author: "",
         date: "",
         description: "",
         cover: "",
@@ -76,17 +86,8 @@ function NewPost() {
         Create New Post
       </h1>
       <Toaster position="top-center" reverseOrder={false} />
-      <div>
-        <div className="flex flex-col items-center justify-center space-x-4 text-center gap-4">
-          {/* {imageUrl && (
-              <img
-                src={imageUrl}
-                alt="Event"
-                className="w-1/4 sm:w-1/2 ml-2 h-full object-cover"
-              />
-            )} */}
-        </div>
-        <form onSubmit={handleSubmit} className="w-1/2 sm:w-full space-y-4">
+      <div className="flex justify-center">
+        <form onSubmit={handleSubmit} className=" w-full  space-y-4">
           <div className="flex flex-col items-center">
             <label htmlFor="name" className="text-sm font-medium text-gray-200">
               Title
@@ -99,6 +100,24 @@ function NewPost() {
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter post title"
+            />
+          </div>
+
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor="author"
+              className="text-sm font-medium text-gray-200"
+            >
+              Author
+            </label>
+            <input
+              className="w-full h-10 rounded-md border-2 border-gray-300 p-2"
+              type="text"
+              id="author"
+              name="author"
+              value={formData.author}
+              onChange={handleChange}
+              placeholder="Enter post author"
             />
           </div>
           <div className="flex flex-col items-center">
@@ -115,7 +134,7 @@ function NewPost() {
               name="cover"
               value={formData.cover}
               onChange={handleChange}
-              placeholder="Enter post cover"
+              placeholder="Enter image URL"
             />
           </div>
           <div className="flex flex-col items-center">
