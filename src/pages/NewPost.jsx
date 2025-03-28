@@ -30,11 +30,11 @@ function NewPost() {
       return toast.error("Please fill in all fields");
     }
 
-    const imageUrlRegex =
-      /^(https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg)(\?.*)?)$/i;
-    if (!imageUrlRegex.test(cover)) {
-      return toast.error("Please enter a valid image URL");
-    }
+    // const imageUrlRegex =
+    //   /^(https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg)(\?.*)?)$/i;
+    // if (!imageUrlRegex.test(cover)) {
+    //   return toast.error("Please enter a valid image URL");
+    // }
 
     try {
       const response = await axios.post(
