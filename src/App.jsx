@@ -1,5 +1,4 @@
 import BlogPost from "./components/BlogPost";
-import BlogPosts from "./components/BlogPosts";
 import Home from "./pages/Home";
 import MainLayout from "./layout/MainLayout";
 import NewPost from "./pages/NewPost";
@@ -14,7 +13,7 @@ function App() {
           <Route index element={<Home />} />
 
           {/* DYNAMIC ROUTES */}
-          <Route path="blogposts" element={<BlogPosts />} />
+
           <Route path="blogposts/:id" element={<BlogPost />} />
           <Route path="new" element={<NewPost />} />
 
